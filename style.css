@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+#opponent-champions {
+  position: fixed; /* Fixiert das Overlay im Browserfenster */
+  top: 10px; /* Abstand vom oberen Rand */
+  left: 10px; /* Abstand vom linken Rand */
+  background-color: rgba(0, 0, 0, 0.5); /* Halbtransparenter Hintergrund */
+  color: white;
+  padding: 10px;
+  z-index: 999999; /* Sehr hoher z-index, um sicherzustellen, dass es im Vordergrund bleibt */
+  max-width: 300px;
+  max-height: 500px;
+  overflow-y: auto;
+  font-family: Arial, sans-serif;
+  border-radius: 5px;
+  visibility: visible;
+  transform: translateZ(0);
+}
+#capture-area {
+  position: absolute;
+  left: 100px; 
+  top: 100px;  
+  width: 400px; 
+  height: 300px; 
+  border: 2px solid red;
+  pointer-events: none; 
+}

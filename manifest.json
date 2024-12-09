@@ -1,0 +1,54 @@
+{
+  "manifest_version": 2,
+  "type": "WebApp",
+  "meta": {
+    "name": "My League Overlay",
+    "description": "A simple transparent overlay for League of Legends",
+    "author": "Your Name",
+    "version": "0.1.1",
+    "minimum-overwolf-version": "0.179.0",
+    "icon": "icons/app-icon.png"
+  },
+  "permissions": [
+    "GameInfo",
+    "Media",
+    "WindowManagement"
+  ],
+  "data": {
+    "start_window": "overlay",
+    "windows": {
+      "overlay": {
+        "file": "index.html",
+        "transparent": true,
+        "clickthrough": true,
+        "resizable": false,
+        "show_in_taskbar": false,
+        "keep_window_topmost": true,
+        "override_on_update": true,
+        "size": {
+          "width": 1920,
+          "height": 1080
+        },
+        "game_targeting": {
+          "type": "dedicated",
+          "game_ids": [5426]
+        }
+      }
+    },
+    "game_targeting": {
+      "game_ids": [5426],
+      "launch_events": [
+        {
+          "event": "GameLaunched",
+          "launch_window": "overlay"
+        }
+      ]
+    },
+    "extra-objects": {
+      "minimap-plugin": {
+        "file": "plugin/MinimapDetectorPlugin.dll",
+        "class": "MinimapDetector"
+      }
+    }
+  }
+}
