@@ -3,79 +3,81 @@ const PLAYER_LIST_ENDPOINT = '/liveclientdata/playerlist';
 const pluginName = "minimap-plugin";
 const agentOptions = { mode: 'cors' };
 
-let pluginInstance = null;
+var pluginInstance = null;
 
-// Plugin initialisieren
-function initializePlugin(callback) {
-    overwolf.extensions.current.getExtraObject(pluginName, (result) => {
+async function initializePlugin() {
+    try {
+        const result = await new Promise((resolve) => {
+            overwolf.extensions.current.getExtraObject(pluginName, resolve);
+        });
+        
         if (result.status === "success") {
-        pluginInstance = result.object;
-        console.log("Plugin erfolgreich initialisiert.");
-        if (callback) callback();
+            pluginInstance = result.object;
+            console.log("Plugin erfolgreich initialisiert.");
         } else {
-        console.error("Fehler beim Initialisieren des Plugins:", result.status, result.error);
+            throw new Error(`Fehler beim Initialisieren des Plugins: ${result.error}`);
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+function getChampionPositions(x, y, width, height, championNames, callback) {
+    if (!pluginInstance) {
+        console.error("Plugin nicht initialisiert.");
+        return;
+    }
+    pluginInstance.CaptureAndDetect(x, y, width, height, championNames, (result) => {
+        if (result.status === "success") {
+            console.log("Champions erfolgreich erkannt:", result.data);
+            callback(result.data);
+        } else {
+            console.error("Fehler beim Abrufen der Champion-Positionen:", result.error);
         }
     });
 }
 
-// Plugin-Funktion aufrufen
-function getChampionPositions(minimapArea, championImages, callback) {
-  if (!pluginInstance) {
-    console.error("Plugin nicht initialisiert.");
-    return;
-  }
-
-  pluginInstance.CaptureAndDetect(minimapArea, championImages, (result) => {
-    if (result.status === "success") {
-      console.log("Champions erfolgreich erkannt:", result.data);
-      callback(result.data);
-    } else {
-      console.error("Fehler beim Abrufen der Champion-Positionen:", result.error);
-    }
-  });
-}
-
-// Funktion zur Datenabfrage und Verarbeitung
 async function fetchAndProcessData() {
-  try {
-    const response = await fetch(`${BASE_URL}${PLAYER_LIST_ENDPOINT}`, { method: 'GET' ,
-      headers: { 'Accept': 'application/json' },
-                ...agentOptions
-    });
-    if (response.ok) {
-      const playerList = await response.json();
-      console.log("Spielerdaten:", playerList);
+    try {
+        const response = await fetch(`${BASE_URL}${PLAYER_LIST_ENDPOINT}`, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' },
+            ...agentOptions
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Fehler beim Abrufen der Spieler-Liste: ${response.statusText}`);
+        }
 
-      const minimapArea = { x: 400, y: 500, width: 300, height: 300 }; // Beispielwerte
-      const championImages = {}; // Muss entsprechend mit deinen Champion-Bildern befüllt sein.
+        const playerList = await response.json();
 
-      getChampionPositions(minimapArea, championImages, (positions) => {
-        console.log("Erkannte Positionen:", positions);
-        updateOverlay(playerList, positions);
-      });
-    } else {
-      console.error("Fehler beim Abrufen der Spieler-Liste:", response.statusText);
+        const x = 400, y = 500, width = 300, height = 300; 
+        const opponents = playerList.filter(player => player.team !== 'ORDER');
+        const championNames = opponents.map(player => player.championName);
+        console.log("Spielernamen:", championNames);
+
+        getChampionPositions(x, y, width, height, championNames, (positions) => {
+            console.log("Erkannte Positionen:", positions);
+            updateOverlay(playerList, positions);
+        });
+    } catch (error) {
+        console.error("Fehler bei der Kommunikation mit der API:", error.message);
     }
-  } catch (error) {
-    console.error("Fehler bei der Kommunikation mit der API:", error);
-  }
 }
 
-// Overlay aktualisieren
 function updateOverlay(playerList, positions) {
-  const overlay = document.getElementById('opponent-champions');
-  if (overlay) {
-    const opponents = playerList.filter(player => player.team !== 'ORDER');
-    const champions = opponents.map(player => player.championName);
+    const overlay = document.getElementById('opponent-champions');
+    if (overlay) {
+        const opponents = playerList.filter(player => player.team !== 'ORDER');
+        const champions = opponents.map(player => player.championName);
 
-    overlay.innerHTML = champions.map((champ, i) => {
-      const position = positions[i] || { x: "N/A", y: "N/A" };
-      return `<div>${champ} - Position: (${position.x}, ${position.y})</div>`;
-    }).join('');
-  }
+        overlay.innerHTML = champions.map((champ, i) => {
+            const position = positions[i] || { x: "N/A", y: "N/A" };
+            return `<div>${champ} - Position: (${position.x}, ${position.y})</div>`;
+        }).join('');
+    }
 }
 
-// Polling starten
-initializePlugin(() => {
-  setInterval(fetchAndProcessData, 5000); // Alle 5 Sekunden aktualisieren
+initializePlugin().then(() => {
+    setInterval(fetchAndProcessData, 5000); 
 });

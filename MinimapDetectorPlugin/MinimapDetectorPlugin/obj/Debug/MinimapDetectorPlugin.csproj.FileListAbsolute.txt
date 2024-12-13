@@ -17,3 +17,13 @@ D:\MinimapDetectorPlugin\MinimapDetectorPlugin\obj\Debug\MinimapDetectorPlugin.p
 D:\MinimapDetectorPlugin\MinimapDetectorPlugin\bin\Debug\MinimapDetectorPlugin.exe.config
 D:\MinimapDetectorPlugin\MinimapDetectorPlugin\bin\Debug\MinimapDetectorPlugin.exe
 D:\MinimapDetectorPlugin\MinimapDetectorPlugin\obj\Debug\MinimapDetectorPlugin.exe
+C:\Users\1\Documents\GitHub\LeagueOfLegendsMinimapTracker\MinimapDetectorPlugin\MinimapDetectorPlugin\bin\Debug\MinimapDetectorPlugin.dll.config
+C:\Users\1\Documents\GitHub\LeagueOfLegendsMinimapTracker\MinimapDetectorPlugin\MinimapDetectorPlugin\bin\Debug\MinimapDetectorPlugin.dll
+C:\Users\1\Documents\GitHub\LeagueOfLegendsMinimapTracker\MinimapDetectorPlugin\MinimapDetectorPlugin\bin\Debug\MinimapDetectorPlugin.pdb
+C:\Users\1\Documents\GitHub\LeagueOfLegendsMinimapTracker\MinimapDetectorPlugin\MinimapDetectorPlugin\bin\Debug\Emgu.CV.Platform.NetStandard.dll
+C:\Users\1\Documents\GitHub\LeagueOfLegendsMinimapTracker\MinimapDetectorPlugin\MinimapDetectorPlugin\bin\Debug\Newtonsoft.Json.dll
+C:\Users\1\Documents\GitHub\LeagueOfLegendsMinimapTracker\MinimapDetectorPlugin\MinimapDetectorPlugin\obj\Debug\MinimapDetectorPlugin.csproj.AssemblyReference.cache
+C:\Users\1\Documents\GitHub\LeagueOfLegendsMinimapTracker\MinimapDetectorPlugin\MinimapDetectorPlugin\obj\Debug\MinimapDetectorPlugin.csproj.CoreCompileInputs.cache
+C:\Users\1\Documents\GitHub\LeagueOfLegendsMinimapTracker\MinimapDetectorPlugin\MinimapDetectorPlugin\obj\Debug\MinimapD.339088D6.Up2Date
+C:\Users\1\Documents\GitHub\LeagueOfLegendsMinimapTracker\MinimapDetectorPlugin\MinimapDetectorPlugin\obj\Debug\MinimapDetectorPlugin.dll
+C:\Users\1\Documents\GitHub\LeagueOfLegendsMinimapTracker\MinimapDetectorPlugin\MinimapDetectorPlugin\obj\Debug\MinimapDetectorPlugin.pdb

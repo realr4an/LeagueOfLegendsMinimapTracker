@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MinimapDetectorPlugin\\MinimapDetectorPlugin\\MinimapDetectorPlugin.csproj": {}
+    "C:\\Users\\1\\Documents\\GitHub\\LeagueOfLegendsMinimapTracker\\MinimapDetectorPlugin\\MinimapDetectorPlugin\\MinimapDetectorPlugin.csproj": {}
   },
   "projects": {
-    "D:\\MinimapDetectorPlugin\\MinimapDetectorPlugin\\MinimapDetectorPlugin.csproj": {
+    "C:\\Users\\1\\Documents\\GitHub\\LeagueOfLegendsMinimapTracker\\MinimapDetectorPlugin\\MinimapDetectorPlugin\\MinimapDetectorPlugin.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MinimapDetectorPlugin\\MinimapDetectorPlugin\\MinimapDetectorPlugin.csproj",
+        "projectUniqueName": "C:\\Users\\1\\Documents\\GitHub\\LeagueOfLegendsMinimapTracker\\MinimapDetectorPlugin\\MinimapDetectorPlugin\\MinimapDetectorPlugin.csproj",
         "projectName": "MinimapDetectorPlugin",
-        "projectPath": "D:\\MinimapDetectorPlugin\\MinimapDetectorPlugin\\MinimapDetectorPlugin.csproj",
-        "packagesPath": "C:\\Users\\robin\\.nuget\\packages\\",
-        "outputPath": "D:\\MinimapDetectorPlugin\\MinimapDetectorPlugin\\obj\\",
+        "projectPath": "C:\\Users\\1\\Documents\\GitHub\\LeagueOfLegendsMinimapTracker\\MinimapDetectorPlugin\\MinimapDetectorPlugin\\MinimapDetectorPlugin.csproj",
+        "packagesPath": "C:\\Users\\1\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\1\\Documents\\GitHub\\LeagueOfLegendsMinimapTracker\\MinimapDetectorPlugin\\MinimapDetectorPlugin\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "UsingMicrosoftNETSdk": false,
@@ -19,42 +19,38 @@
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\robin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\1\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net48"
+          "net472"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net48": {
+          "net472": {
             "projectReferences": {}
           }
         },
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "direct"
+          "auditMode": "all"
         }
       },
       "frameworks": {
-        "net48": {
+        "net472": {
           "dependencies": {
             "Emgu.CV": {
               "target": "Package",
-              "version": "[4.9.0.5494, )"
-            },
-            "Emgu.CV.runtime.windows": {
-              "target": "Package",
-              "version": "[4.9.0.5494, )"
+              "version": "[4.5.5.4823, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[13.0.3, )"
+              "version": "[13.0.1, )"
             },
             "System.Drawing.Primitives": {
               "target": "Package",
@@ -67,10 +63,6 @@
             "System.Runtime.InteropServices.RuntimeInformation": {
               "target": "Package",
               "version": "[4.3.0, )"
-            },
-            "System.Text.Json": {
-              "target": "Package",
-              "version": "[8.0.1, )"
             }
           }
         }

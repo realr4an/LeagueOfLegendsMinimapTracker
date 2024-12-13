@@ -6,23 +6,19 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Newtonsoft.Json;
-using System.IO; 
+using System.IO;
 
-public static class MinimapDetector
+public class MinimapDetector
 {
-    // Red color thresholds
-    private static readonly ScalarArray lowerRed = new ScalarArray(new MCvScalar(100, 0, 0));
-    private static readonly ScalarArray upperRed = new ScalarArray(new MCvScalar(255, 100, 100));
-   static void Main(String[] args)
+    private static readonly ScalarArray LowerRed = new ScalarArray(new MCvScalar(100, 0, 0));
+    private static readonly ScalarArray UpperRed = new ScalarArray(new MCvScalar(255, 100, 100));
+
+    public string CaptureAndDetect(int x, int y, int width, int height, List<string> championNames)
     {
-        Console.WriteLine("HEllo WOrld "); 
-    }
-    public static string CaptureAndDetect(Dictionary<String, int> cords, Dictionary<string, Mat> championImages)
-    {
-        Rectangle minimapArea = new Rectangle(cords["x"], cords["y"], cords["width"], cords["height"]);
-        // List to store detected champions
+        Dictionary<string, Mat> championImages = LoadChampionImages(championNames);
+        Rectangle minimapArea = new Rectangle(x, y, width, height);
         var detectedChampions = new List<ChampionData>();
-        // Capture minimap
+
         using (var bitmap = new Bitmap(minimapArea.Width, minimapArea.Height))
         {
             using (var graphics = Graphics.FromImage(bitmap))
@@ -30,17 +26,12 @@ public static class MinimapDetector
                 graphics.CopyFromScreen(minimapArea.Location, Point.Empty, minimapArea.Size);
             }
 
-            // Convert Bitmap to Mat
             var frame = BitmapToMat(bitmap);
 
-            // Create mask for red areas (representing champions)
             var maskRed = new Mat();
-            CvInvoke.InRange(frame, lowerRed, upperRed, maskRed);
-
-            // Apply GaussianBlur to reduce noise
+            CvInvoke.InRange(frame, LowerRed, UpperRed, maskRed);
             CvInvoke.GaussianBlur(maskRed, maskRed, new Size(3, 3), 2);
 
-            // Detect circles using Hough Circle Transformation
             CircleF[] circles = CvInvoke.HoughCircles(
                 maskRed,
                 HoughModes.Gradient,
@@ -52,49 +43,64 @@ public static class MinimapDetector
                 maxRadius: 20
             );
 
-            if (circles.Length > 0)
+            foreach (var circle in circles)
             {
-                foreach (var circle in circles)
+                var circleRect = new Rectangle(
+                    (int)(circle.Center.X - circle.Radius),
+                    (int)(circle.Center.Y - circle.Radius),
+                    (int)(2 * circle.Radius),
+                    (int)(2 * circle.Radius)
+                );
+
+                if (IsValidRectangle(circleRect, frame))
                 {
-                    // Extract circle region from the frame
-                    Rectangle circleRect = new Rectangle(
-                        (int)(circle.Center.X - circle.Radius),
-                        (int)(circle.Center.Y - circle.Radius),
-                        (int)(2 * circle.Radius),
-                        (int)(2 * circle.Radius)
-                    );
+                    Mat circleImg = new Mat(frame, circleRect);
+                    string detectedChampion = FindBestMatch(circleImg, championImages);
 
-                    if (circleRect.X >= 0 && circleRect.Y >= 0 &&
-                        circleRect.Right <= frame.Width && circleRect.Bottom <= frame.Height)
+                    if (!string.IsNullOrEmpty(detectedChampion))
                     {
-                        Mat circleImg = new Mat(frame, circleRect);
-
-                        // Match the circle image against known champions
-                        string detectedChampion = FindBestMatch(circleImg, championImages);
-
-                        if (detectedChampion != null)
+                        detectedChampions.Add(new ChampionData
                         {
-                            // Add detected champion and its position to the list
-                            detectedChampions.Add(new ChampionData
-                            {
-                                Name = detectedChampion,
-                                X = (int)circle.Center.X,
-                                Y = (int)circle.Center.Y
-                            });
-                        }
+                            Name = detectedChampion,
+                            X = (int)circle.Center.X,
+                            Y = (int)circle.Center.Y
+                        });
                     }
                 }
             }
         }
-
-        // Serialize detected champions to JSON
         return JsonConvert.SerializeObject(detectedChampions);
+    }
+
+    private static Dictionary<string, Mat> LoadChampionImages(List<string> championNames)
+    {
+        var championImages = new Dictionary<string, Mat>();
+        string basePath = "champion_images";
+
+        foreach (string champName in championNames)
+        {
+            string filePath = Path.Combine(basePath, champName + ".png");
+            if (File.Exists(filePath))
+            {
+                Mat champImg = CvInvoke.Imread(filePath, ImreadModes.Color);
+                if (champImg != null)
+                {
+                    championImages[champName] = champImg;
+                }
+            }
+        }
+        return championImages;
+    }
+
+    private static bool IsValidRectangle(Rectangle rect, Mat frame)
+    {
+        return rect.X >= 0 && rect.Y >= 0 && rect.Right <= frame.Width && rect.Bottom <= frame.Height;
     }
 
     private static string FindBestMatch(Mat circleImg, Dictionary<string, Mat> championImages)
     {
         string bestMatch = null;
-        double highestScore = 0.2; // Similarity threshold
+        double highestScore = 0.2;
 
         foreach (var champ in championImages)
         {
@@ -115,7 +121,6 @@ public static class MinimapDetector
     private static Mat BitmapToMat(Bitmap bitmap)
     {
         Mat mat = new Mat(bitmap.Height, bitmap.Width, DepthType.Cv8U, 3);
-
         BitmapData bitmapData = bitmap.LockBits(
             new Rectangle(0, 0, bitmap.Width, bitmap.Height),
             ImageLockMode.ReadOnly,
@@ -129,7 +134,6 @@ public static class MinimapDetector
         );
 
         bitmap.UnlockBits(bitmapData);
-
         return mat;
     }
 }
