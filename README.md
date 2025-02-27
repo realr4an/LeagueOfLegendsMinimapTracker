@@ -92,4 +92,4 @@ Dieses Projekt steht unter der **MIT-Lizenz** – nutze und modifiziere es frei!
 
 ---
 
-✉️ Fragen oder Feedback? Erstelle ein [GitHub-Issue](https://github.com/dein-benutzername/LeagueOfLegendsMinimapTracker/issues) oder kontaktiere uns! 🚀
+✉️ Fragen oder Feedback? Erstelle ein [GitHub-Issue](https://github.com/realr4an/LeagueOfLegendsMinimapTracker/issues) oder kontaktiere uns! 🚀
