@@ -38,11 +38,9 @@ Der **League of Legends Minimap Tracker** ist ein Tool, das automatisch Bewegung
 ## 📂 Projektstruktur
 ```
 LeagueOfLegendsMinimapTracker/
-│-- src/                 # Quellcode des Trackers
-│-- data/                # Gespeicherte Minimap-Daten
-│-- docs/                # Dokumentation und Anleitungen
-│-- models/              # Modelle zur Datenanalyse
-│-- config/              # Konfigurationsdateien
+│-- champion_icons       # Alle Icons der League of Legends Champions
+│-- Plots/               # Dateien für die visualisierung
+│-- config.txt           # Konfigurationsdateien
 │-- requirements.txt     # Notwendige Python-Bibliotheken
 │-- README.md            # Projektbeschreibung
 │-- main.py              # Hauptskript zum Starten der Anwendung
