@@ -1,0 +1,4 @@
+top:1255
+left:2290
+width:580
+height:580

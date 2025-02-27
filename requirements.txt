@@ -1,0 +1,9 @@
+opencv-python
+numpy
+mss
+pyautogui
+scikit-image
+pandas
+requests
+seaborn
+PyQt5
