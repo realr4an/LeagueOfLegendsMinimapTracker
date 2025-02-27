@@ -89,9 +89,9 @@ Dieses Projekt steht unter der **MIT-Lizenz** – nutze und modifiziere es frei!
 ---
 
 ## 👥 Mitwirkende
-- **[Dein Name](https://github.com/dein-benutzername)** – Entwickler  
-- **Weitere Mitwirkende willkommen!**  
+- **[realr4an](https://github.com/realr4an)** – Entwickler
+- **[disperion](https://github.com/disperion3)** – Entwickler    
 
 ---
 
-✉️ Fragen oder Feedback? Erstelle ein [GitHub-Issue](https://github.com/dein-benutzername/LeagueOfLegendsMinimapTracker/issues) oder kontaktiere mich! 🚀
+✉️ Fragen oder Feedback? Erstelle ein [GitHub-Issue](https://github.com/dein-benutzername/LeagueOfLegendsMinimapTracker/issues) oder kontaktiere uns! 🚀
