@@ -26,15 +26,25 @@ class ChampionRecognizer:
 
     def fetch_opponent_champions(self):
         try:
-            response = requests.get(f"{self.BASE_URL}{self.PLAYER_LIST_ENDPOINT}", verify=False)
-            response.raise_for_status()
-            player_list = response.json()
-            opponents = [player['championName'] for player in player_list if player['team'] != 'ORDER']
+            active_resp = requests.get(f"{self.BASE_URL}/liveclientdata/activeplayer", verify=False)
+            active_resp.raise_for_status()
+            my_team = active_resp.json().get('team')
+            opponent_team = 'CHAOS' if my_team == 'ORDER' else 'ORDER'
+            resp = requests.get(
+                f"{self.BASE_URL}{self.PLAYER_LIST_ENDPOINT}",
+                params={'teamID': opponent_team},
+                verify=False
+            )
+            resp.raise_for_status()
+            player_list = resp.json()
+            opponents = [p['championName'] for p in player_list]
             self.champion_images = {}
             self.load_champion_images(opponents)
+
         except requests.exceptions.RequestException:
             print("Failed to fetch opponent champions from API.")
             self.champion_images = {}
+
 
     def calculate_ssim_score(self, img1, img2):
         img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
