@@ -1,4 +1,6 @@
-top:1255
-left:2290
-width:580
-height:580
+top:721
+left:1561
+width:339
+height:339
+overlay_color:#ff0000
+team:CHAOS

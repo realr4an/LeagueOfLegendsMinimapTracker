@@ -26,15 +26,38 @@ def load_champion_images(champion_names=None):
         if champ_img is not None:
             champion_images[champ_name] = champ_img
 
-def fetch_opponent_champions():
+def fetch_opponent_champions(self):
+    """
+    Lädt Champion-Icons für das gewählte Team.
+    team_mode="OPPONENT": ermittelt eigenes Team und nimmt das gegnerische.
+    team_mode="ORDER"/"CHAOS": nimmt exakt dieses Team.
+    """
     try:
-        response = requests.get(f"{BASE_URL}{PLAYER_LIST_ENDPOINT}", verify=False)
-        response.raise_for_status()
-        player_list = response.json()
-        opponents = [player['championName'] for player in player_list if player['team'] != 'ORDER']
-        load_champion_images(opponents)
+        # gewünschtes Team bestimmen
+        if self.team_mode in ("ORDER", "CHAOS"):
+            team_to_fetch = self.team_mode
+        else:
+            active_resp = requests.get(f"{self.BASE_URL}/liveclientdata/activeplayer", verify=False, timeout=1.0)
+            active_resp.raise_for_status()
+            my_team = active_resp.json().get('team')
+            team_to_fetch = 'CHAOS' if my_team == 'ORDER' else 'ORDER'
+
+        # Liste aller Spieler holen und lokal filtern
+        resp = requests.get(f"{self.BASE_URL}{self.PLAYER_LIST_ENDPOINT}", verify=False, timeout=1.0)
+        resp.raise_for_status()
+        player_list = resp.json()
+        names = [p['championName'] for p in player_list if p.get('team') == team_to_fetch]
+
+        # Icons nur für diese Namen laden
+        self.champion_images = {}
+        self.load_champion_images(names)
+
     except requests.exceptions.RequestException:
-        load_champion_images()
+        print("Failed to fetch champions from API (team selection). Falling back to local icons.")
+        # Fallback: nichts tun oder alle lokalen Icons laden:
+        # self.champion_images = {}
+        # self.load_champion_images()
+
 
 def calculate_ssim_score(img1, img2):
     img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)

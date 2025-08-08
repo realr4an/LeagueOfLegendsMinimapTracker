@@ -26,7 +26,10 @@ class ChampionTracker:
             "low_ssim_recognitions": 0,
             "average_ssim": 0.0,
         }
+        self.last_seen = {}
 
+
+    
 
     def save_position_to_timeline(self):
         for champ_name, pos in self.latest_positions.items():
@@ -56,6 +59,13 @@ class ChampionTracker:
         print(f"Timeline saved to {file_path}")
         self.timeline_positions.clear()
 
+    def set_team_mode(self, mode: str):
+        """Setzt den Team-Modus im Recognizer und lädt die Icons neu."""
+        self.recognizer.set_team_mode(mode)
+        self.fetch_static_champions()  # lädt Icons für das gewählte Team
+        self.latest_positions = {}     # alte Positionen leeren
+        print(f"Teammodus -> {mode} (Icons neu geladen)")
+
     def print_recognition_stats(self):
         print("\n--- Champion Recognition Statistics ---")
         print(f"Total Recognitions: {self.recognition_stats['total_recognitions']}")
@@ -74,12 +84,14 @@ class ChampionTracker:
         self.champions = list(self.recognizer.champion_images.keys())
 
     def get_latest_positions(self):
-        """
-        Return a list of champion names and their positions.
-        If a position is not available, set it to None.
-        """
+        now = time.time()
         return [
-            {"Champion": champ, "Position": self.latest_positions.get(champ, None)}
+            {
+                "Champion": champ,
+                "Position": self.latest_positions.get(champ, None),
+                "last_seen_secs": (int(now - self.last_seen[champ]) 
+                                if champ in self.last_seen else None)
+            }
             for champ in self.champions
         ]
     
@@ -113,6 +125,7 @@ class ChampionTracker:
                         self.recognition_stats["low_ssim_recognitions"] += 1
                     else:
                         self.recognition_stats["successful_recognitions"] += 1
+                    self.last_seen[champ_name] = time.time()
 
                 if self.recognition_stats["successful_recognitions"] > 0:
                     self.recognition_stats["average_ssim"] = (
